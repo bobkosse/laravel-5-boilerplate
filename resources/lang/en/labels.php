@@ -71,6 +71,7 @@ return [
                     'name'           => 'Name',
                     'first_name'     => 'First Name',
                     'last_name'      => 'Last Name',
+                    'tenant_name'    => 'Tenant Name',
                     'no_deactivated' => 'No Deactivated Users',
                     'no_deleted'     => 'No Deleted Users',
                     'other_permissions' => 'Other Permissions',
