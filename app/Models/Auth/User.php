@@ -3,6 +3,7 @@
 namespace App\Models\Auth;
 
 use App\Models\Traits\Uuid;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Spatie\Permission\Traits\HasRoles;
 use Illuminate\Notifications\Notifiable;
 use App\Models\Auth\Traits\Scope\UserScope;
@@ -64,4 +65,13 @@ class User extends Authenticatable
      * @var array
      */
     protected $appends = ['full_name'];
+
+    /**
+     * User belongs to tenant
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     */
+    public function tenant(): BelongsTo
+    {
+        return $this->belongsTo('App\Models\Tenant\Tenant');
+    }
 }
