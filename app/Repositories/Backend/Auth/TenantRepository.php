@@ -10,6 +10,14 @@ use Illuminate\Support\Facades\DB;
 
 class TenantRepository extends BaseRepository
 {
+    private $userRepository;
+
+    public function __construct(UserRepository $userRepository)
+    {
+        $this->userRepository = $userRepository;
+        parent::__construct();
+    }
+
     /**
      * @return string
      */
@@ -46,7 +54,6 @@ class TenantRepository extends BaseRepository
                 throw new GeneralException('A tenant already exists with the name ' . $data['tenant_name']);
             }
 
-
             return DB::transaction(function () use ($tenant, $data) {
                 if ($tenant->update([
                     'tenant_name' => $data['tenant_name'],
@@ -74,9 +81,14 @@ class TenantRepository extends BaseRepository
             ]);
 
             if ($tenant) {
-                // @TODO: CREATE A NEW USER FOR THIS TENANT
-                event(new TenantCreated($tenant));
+                try {
+                    $data['tenant_id'] = $tenant->id;
+                    $user = $this->userRepository->create($data);
+                } catch(GeneralException $e) {
+                    throw new GeneralException($e->getMessage());
+                }
 
+                event(new TenantCreated($tenant));
                 return $tenant;
             }
 

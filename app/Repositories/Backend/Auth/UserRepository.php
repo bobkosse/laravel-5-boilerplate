@@ -102,6 +102,7 @@ class UserRepository extends BaseRepository
     {
         return DB::transaction(function () use ($data) {
             $user = parent::create([
+                'tenant_id' => $data['tenant_id'],
                 'first_name' => $data['first_name'],
                 'last_name' => $data['last_name'],
                 'email' => $data['email'],

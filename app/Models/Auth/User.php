@@ -46,6 +46,7 @@ class User extends Authenticatable
         'confirmation_code',
         'confirmed',
         'timezone',
+        'tenant_id',
     ];
 
     /**

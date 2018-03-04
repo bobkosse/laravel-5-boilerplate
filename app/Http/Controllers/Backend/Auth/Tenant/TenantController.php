@@ -5,6 +5,8 @@ namespace App\Http\Controllers\Backend\Auth\Tenant;
 use App\Http\Requests\Backend\Auth\Tenant\StoreTenantRequest;
 use App\Http\Requests\Backend\Auth\Tenant\UpdateTenantRequest;
 use App\Models\Auth\Tenant;
+use App\Repositories\Backend\Auth\PermissionRepository;
+use App\Repositories\Backend\Auth\RoleRepository;
 use App\Repositories\Backend\Auth\TenantRepository;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
@@ -32,15 +34,27 @@ class TenantController extends Controller
             ->withTenant($tenant);
     }
 
-    public function create(): View
+    public function create(RoleRepository $roleRepository, PermissionRepository $permissionRepository): View
     {
-        return view('backend.auth.tenant.create');
+        return view('backend.auth.tenant.create')
+            ->withRoles($roleRepository->with('permissions')->get(['id', 'name']))
+            ->withPermissions($permissionRepository->get(['id', 'name']));
     }
 
     public function store(StoreTenantRequest $request): RedirectResponse
     {
         $this->tenantRepository->create($request->only([
-            'tenant_name'
+            'tenant_name',
+            'first_name',
+            'last_name',
+            'email',
+            'password',
+            'timezone',
+            'active',
+            'confirmed',
+            'confirmation_email',
+            'roles',
+            'permissions'
         ]));
 
         return redirect()->route('admin.auth.tenant.index')->withFlashSuccess(__('alerts.backend.tenant.created'));
