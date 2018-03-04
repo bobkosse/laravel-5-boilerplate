@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Backend\Auth\Tenant;
 
+use App\Events\Backend\Auth\Tenant\TenantDeleted;
 use App\Http\Requests\Backend\Auth\Tenant\StoreTenantRequest;
 use App\Http\Requests\Backend\Auth\Tenant\UpdateTenantRequest;
 use App\Models\Auth\Tenant;
@@ -71,13 +72,8 @@ class TenantController extends Controller
 
     public function destroy(Tenant $tenant): RedirectResponse
     {
-//        if ($role->isAdmin()) {
-//            return redirect()->route('admin.auth.role.index')->withFlashDanger(__('exceptions.backend.access.roles.cant_delete_admin'));
-//        }
-//
-//        $this->roleRepository->deleteById($role->id);
-//
-//        event(new RoleDeleted($role));
+        $this->tenantRepository->deleteById($tenant->id);
+        event(new TenantDeleted($tenant));
 
         return redirect()->route('admin.auth.tenant.index')->withFlashSuccess(__('alerts.backend.tenant.deleted'));
     }

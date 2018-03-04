@@ -3,6 +3,7 @@
 namespace App\Models\Auth;
 
 use App\Models\Auth\Traits\Attribute\TenantAttribute;
+use App\Models\Auth\Traits\Method\TenantMethod;
 use App\Models\Auth\Traits\Relationship\TenantRelationship;
 use App\Models\Traits\Uuid;
 use Illuminate\Database\Eloquent\Model;
@@ -13,6 +14,7 @@ class Tenant extends Model
     use SoftDeletes,
         TenantRelationship,
         TenantAttribute,
+        TenantMethod,
         Uuid;
 
     /**
