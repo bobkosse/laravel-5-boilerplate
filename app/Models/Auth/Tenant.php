@@ -23,5 +23,8 @@ class Tenant extends Model
      */
     protected $fillable = [
         'tenant_name',
+        'active',
+        'end_subscription',
+        'max_users'
     ];
 }

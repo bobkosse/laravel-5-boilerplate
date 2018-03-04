@@ -42,6 +42,8 @@ return [
                 'sort'            => 'Sort',
                 'users'            => 'Users',
                 'total'           => 'tenant total|tenants total',
+                'active'            => 'Active',
+                'end_subscription'  => 'End subscription'
             ],
         ],
         'access' => [

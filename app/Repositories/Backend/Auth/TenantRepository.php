@@ -63,17 +63,20 @@ class TenantRepository extends BaseRepository
             if ($this->tenantExists($data['tenant_name'])) {
                 throw new GeneralException('A tenant already exists with the name ' . $data['tenant_name']);
             }
-
-            return DB::transaction(function () use ($tenant, $data) {
-                if ($tenant->update([
-                    'tenant_name' => $data['tenant_name'],
-                ])
-                ) {
-                    return $tenant;
-                }
-                throw new GeneralException(trans('exceptions.backend.access.roles.update_error'));
-            });
         }
+
+        return DB::transaction(function () use ($tenant, $data) {
+            if ($tenant->update([
+                'tenant_name' => $data['tenant_name'],
+                'active' => isset($data['active']) ? true : false,
+                'end_subscription' => $data['end_subscription'],
+                'max_users' => $data['max_users'],
+            ])
+            ) {
+                return $tenant;
+            }
+            throw new GeneralException(trans('exceptions.backend.access.roles.update_error'));
+        });
     }
 
     /**

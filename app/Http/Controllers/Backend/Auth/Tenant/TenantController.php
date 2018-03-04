@@ -100,7 +100,10 @@ class TenantController extends Controller
     public function update(Tenant $tenant, UpdateTenantRequest $request): RedirectResponse
     {
         $this->tenantRepository->update($tenant, $request->only([
-            'tenant_name'
+            'tenant_name',
+            'active',
+            'end_subscription',
+            'max_users'
         ]));
         event(new TenantUpdated($tenant));
 

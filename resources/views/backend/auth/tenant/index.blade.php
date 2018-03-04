@@ -25,6 +25,8 @@
                             <tr>
                                 <th>{{ __('labels.backend.tenant.table.tenant') }}</th>
                                 <th>{{ __('labels.backend.tenant.table.users') }}</th>
+                                <th>{{ __('labels.backend.tenant.table.active') }}</th>
+                                <th>{{ __('labels.backend.tenant.table.end_subscription') }}</th>
                                 <th>{{ __('labels.general.actions') }}</th>
                             </tr>
                             </thead>
@@ -32,7 +34,9 @@
                             @foreach ($tenants as $tenant)
                                 <tr>
                                     <td>{{ ucfirst($tenant->tenant_name) }}</td>
-                                    <td>{{ $tenant->users->count() }}</td>
+                                    <td>{{ $tenant->users->count() }} / {{ $tenant->max_users }}</td>
+                                    <td>{!! $tenant->active_label !!}</td>
+                                    <td>{{ \Carbon\Carbon::parse($tenant->end_subscription)->toFormattedDateString() }}</td>
                                     <td>{!! $tenant->action_buttons !!}</td>
                                 </tr>
                             @endforeach

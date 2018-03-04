@@ -20,4 +20,12 @@ trait TenantMethod
         // delete the tenant
         return parent::delete();
     }
+
+    /**
+     * @return bool
+     */
+    public function isActive()
+    {
+        return $this->active == 1;
+    }
 }
