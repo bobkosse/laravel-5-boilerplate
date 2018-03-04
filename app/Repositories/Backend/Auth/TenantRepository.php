@@ -90,11 +90,15 @@ class TenantRepository extends BaseRepository
         return DB::transaction(function () use ($data) {
             $tenant = parent::create([
                 'tenant_name' => $data['tenant_name'],
+                'active' => isset($data['active']) ? true : false,
+                'end_subscription' => $data['end_subscription'],
+                'max_users' => $data['max_users'],
             ]);
 
             if ($tenant) {
                 try {
                     $data['tenant_id'] = $tenant->id;
+                    $data['useGivenTenantId'] = true;
                     $user = $this->userRepository->create($data);
                 } catch(GeneralException $e) {
                     throw new GeneralException($e->getMessage());

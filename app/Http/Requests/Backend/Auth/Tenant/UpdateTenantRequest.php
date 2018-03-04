@@ -28,6 +28,8 @@ class UpdateTenantRequest extends FormRequest
     {
         return [
             'tenant_name' => 'required|max:255',
+            'end_subscription' => 'required|date',
+            'max_users' => ['required', 'int', 'min:'.$this->tenant->users()->count()]
         ];
     }
 }

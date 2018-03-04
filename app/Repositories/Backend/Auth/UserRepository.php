@@ -100,7 +100,10 @@ class UserRepository extends BaseRepository
      */
     public function create(array $data) : User
     {
-        $data['tenant_id'] = auth()->user()->tenant_id;
+        if(!isset($data['useGivenTenantId']) || !$data['useGivenTenantId']) {
+            $data['tenant_id'] = auth()->user()->tenant_id;
+        }
+
         return DB::transaction(function () use ($data) {
             $user = parent::create([
                 'tenant_id' => $data['tenant_id'],

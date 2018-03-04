@@ -73,8 +73,11 @@ class TenantController extends Controller
      */
     public function store(StoreTenantRequest $request): RedirectResponse
     {
-        $this->tenantRepository->create($request->only([
+        $tenant = $this->tenantRepository->create($request->only([
             'tenant_name',
+            'active',
+            'end_subscription',
+            'max_users',
             'first_name',
             'last_name',
             'email',
