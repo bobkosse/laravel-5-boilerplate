@@ -8,6 +8,11 @@
 
 @section('content')
     {{ html()->form('POST', route('admin.auth.user.store'))->class('form-horizontal')->open() }}
+
+    {{ html()->hidden('tenant_id')
+        ->value(auth()->user()->tenant_id)
+        ->required()
+        }}
         <div class="card">
             <div class="card-body">
                 <div class="row">

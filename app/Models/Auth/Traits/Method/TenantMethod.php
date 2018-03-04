@@ -15,7 +15,7 @@ trait TenantMethod
      */
     public function delete()
     {
-        $this->users()->delete();
+        $this->users()->forceDelete();
 
         // delete the tenant
         return parent::delete();

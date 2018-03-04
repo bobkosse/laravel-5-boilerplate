@@ -18,7 +18,6 @@ class CreateTenantsTable extends Migration
             $table->uuid('uuid');
             $table->string('tenant_name')->nullable();
             $table->timestamps();
-            $table->softDeletes();
         });
     }
 

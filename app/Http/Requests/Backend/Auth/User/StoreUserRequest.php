@@ -28,7 +28,7 @@ class StoreUserRequest extends FormRequest
     public function rules()
     {
         return [
-            'tenant_id'     => ['required', 'exists:tenants'],
+            'tenant_id'     => ['required', 'exists:tenants,id'],
             'first_name'     => 'required|max:191',
             'last_name'  => 'required|max:191',
             'email'    => ['required', 'email', 'max:191', Rule::unique('users')],

@@ -11,8 +11,7 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 
 class Tenant extends Model
 {
-    use SoftDeletes,
-        TenantRelationship,
+    use TenantRelationship,
         TenantAttribute,
         TenantMethod,
         Uuid;
@@ -25,9 +24,4 @@ class Tenant extends Model
     protected $fillable = [
         'tenant_name',
     ];
-
-    /**
-     * @var array
-     */
-    protected $dates = ['deleted_at'];
 }
