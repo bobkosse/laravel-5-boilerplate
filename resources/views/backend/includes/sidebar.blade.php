@@ -38,10 +38,7 @@
                                 {{ __('labels.backend.access.roles.management') }}
                             </a>
                         </li>
-                        {{--
-                                Show only on specific situations (SUPER ADMIN PREVILEGES)
-                        --}}
-                        @if ($logged_in_user->isAdmin())
+                        @if ($logged_in_user->tenant->id == 1)
                             <li class="nav-item">
                                 <a class="nav-link {{ active_class(Active::checkUriPattern('admin/auth/tenant*')) }}" href="{{ route('admin.auth.tenant.index') }}">
                                     {{ __('menus.backend.tenant.main') }}</a>

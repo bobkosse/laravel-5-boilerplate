@@ -41,8 +41,11 @@ class TenantController extends Controller
      */
     public function index(): View
     {
-        return view('backend.auth.tenant.index')
-            ->withTenants($this->tenantRepository->getAllPaginated());
+        if(session('tenant_id') == 1) {
+            return view('backend.auth.tenant.index')
+                ->withTenants($this->tenantRepository->getAllPaginated());
+        }
+        return view('backend.dashboard');
     }
 
     /**
@@ -51,8 +54,11 @@ class TenantController extends Controller
      */
     public function edit(Tenant $tenant): View
     {
-        return view('backend.auth.tenant.edit')
-            ->withTenant($tenant);
+        if(session('tenant_id') == 1) {
+            return view('backend.auth.tenant.edit')
+                ->withTenant($tenant);
+        }
+        return view('backend.dashboard');
     }
 
     /**
@@ -62,9 +68,12 @@ class TenantController extends Controller
      */
     public function create(RoleRepository $roleRepository, PermissionRepository $permissionRepository): View
     {
-        return view('backend.auth.tenant.create')
-            ->withRoles($roleRepository->with('permissions')->get(['id', 'name']))
-            ->withPermissions($permissionRepository->get(['id', 'name']));
+        if(session('tenant_id') == 1) {
+            return view('backend.auth.tenant.create')
+                ->withRoles($roleRepository->with('permissions')->get(['id', 'name']))
+                ->withPermissions($permissionRepository->get(['id', 'name']));
+        }
+        return view('backend.dashboard');
     }
 
     /**
@@ -73,6 +82,10 @@ class TenantController extends Controller
      */
     public function store(StoreTenantRequest $request): RedirectResponse
     {
+        if(session('tenant_id') !== 1) {
+            return redirect()->route('admin.dashboard');
+        }
+
         $tenant = $this->tenantRepository->create($request->only([
             'tenant_name',
             'active',
@@ -102,6 +115,10 @@ class TenantController extends Controller
      */
     public function update(Tenant $tenant, UpdateTenantRequest $request): RedirectResponse
     {
+        if(session('tenant_id') !== 1) {
+            return redirect()->route('admin.dashboard');
+        }
+
         $this->tenantRepository->update($tenant, $request->only([
             'tenant_name',
             'active',
@@ -119,6 +136,10 @@ class TenantController extends Controller
      */
     public function destroy(Tenant $tenant): RedirectResponse
     {
+        if(session('tenant_id') !== 1) {
+            return redirect()->route('admin.dashboard');
+        }
+        
         $this->tenantRepository->deleteById($tenant->id);
         event(new TenantDeleted($tenant));
 

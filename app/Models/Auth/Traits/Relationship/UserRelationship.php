@@ -5,6 +5,7 @@ namespace App\Models\Auth\Traits\Relationship;
 use App\Models\Auth\Tenant;
 use App\Models\System\Session;
 use App\Models\Auth\SocialAccount;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 /**
  * Class UserRelationship.
