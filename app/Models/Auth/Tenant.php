@@ -1,7 +1,9 @@
 <?php
 
-namespace App\Models\Tenant;
+namespace App\Models\Auth;
 
+use App\Models\Auth\Traits\Attribute\TenantAttribute;
+use App\Models\Auth\Traits\Relationship\TenantRelationship;
 use App\Models\Traits\Uuid;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
@@ -9,6 +11,8 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 class Tenant extends Model
 {
     use SoftDeletes,
+        TenantRelationship,
+        TenantAttribute,
         Uuid;
 
     /**

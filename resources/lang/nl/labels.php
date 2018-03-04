@@ -69,7 +69,6 @@ return [
                     'last_updated'   => 'Laatst Bijgewerkt',
                     'first_name'     => 'Voornaam',
                     'last_name'      => 'Achternaam',
-                    'tenant_name'    => 'Tenant naam',
                     'name'           => 'Naam',
                     'no_deactivated' => 'Geen gedeactiveerde Gebruikers',
                     'no_deleted'     => 'Geen Verwijderde Gebruikers',

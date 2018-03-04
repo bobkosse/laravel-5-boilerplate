@@ -119,6 +119,9 @@ return [
     'attributes' => [
 
         'backend' => [
+            'tenant' => [
+                'tenant_name' => 'Tenant Name',
+            ],
             'access' => [
                 'permissions' => [
                     'associated_roles' => 'Associated Roles',

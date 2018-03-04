@@ -65,13 +65,4 @@ class User extends Authenticatable
      * @var array
      */
     protected $appends = ['full_name'];
-
-    /**
-     * User belongs to tenant
-     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
-     */
-    public function tenant(): BelongsTo
-    {
-        return $this->belongsTo('App\Models\Tenant\Tenant');
-    }
 }

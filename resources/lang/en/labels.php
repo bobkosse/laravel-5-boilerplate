@@ -33,6 +33,17 @@ return [
     ],
 
     'backend' => [
+        'tenant' => [
+            'management' => 'Tenant Management',
+            'edit' => 'Edit tenant',
+            'table' => [
+                'number_of_tenants' => 'Number of tenants',
+                'tenant'            => 'Tenant name',
+                'sort'            => 'Sort',
+                'users'            => 'Users',
+                'total'           => 'tenant total|tenants total',
+            ],
+        ],
         'access' => [
             'roles' => [
                 'create'     => 'Create Role',
@@ -71,7 +82,6 @@ return [
                     'name'           => 'Name',
                     'first_name'     => 'First Name',
                     'last_name'      => 'Last Name',
-                    'tenant_name'    => 'Tenant Name',
                     'no_deactivated' => 'No Deactivated Users',
                     'no_deleted'     => 'No Deleted Users',
                     'other_permissions' => 'Other Permissions',

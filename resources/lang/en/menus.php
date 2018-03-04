@@ -14,6 +14,10 @@ return [
     */
 
     'backend' => [
+        'tenant' => [
+            'main'      => 'Tenants'
+        ],
+
         'access' => [
             'title' => 'Access Management',
 

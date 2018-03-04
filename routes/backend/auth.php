@@ -65,6 +65,13 @@ Route::group([
         });
 
         /*
+         * Tenant Management
+         */
+        Route::group(['namespace' => 'Tenant'], function () {
+            Route::resource('/tenant', 'TenantController');
+        });
+
+        /*
          * Role Management
          */
         Route::group(['namespace' => 'Role'], function () {
