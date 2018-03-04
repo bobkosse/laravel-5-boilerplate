@@ -27,6 +27,6 @@ trait TenantMethod
      */
     public function isActive()
     {
-        return $this->active == 1 && $this->end_subscription >= Carbon::today();
+        return ($this->active == 1 && $this->end_subscription >= Carbon::today());
     }
 }

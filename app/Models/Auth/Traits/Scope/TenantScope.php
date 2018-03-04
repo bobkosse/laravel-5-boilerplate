@@ -17,7 +17,12 @@ trait TenantScope
         if(! app()->runningInConsole()) {
 
             static::addGlobalScope('tenant_id', function (Builder $builder) {
-                $builder->where('tenant_id',  session('tenant_id'));
+                $tenantId = session('tenant_id');
+                if(is_null($tenantId)) {
+                    return;
+                }
+
+                $builder->where('tenant_id',  $tenantId);
             });
         }
     }

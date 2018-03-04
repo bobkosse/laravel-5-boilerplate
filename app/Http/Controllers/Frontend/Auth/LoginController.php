@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Frontend\Auth;
 
 use App\Helpers\Auth\Auth;
+use App\Repositories\Backend\Auth\TenantRepository;
 use Illuminate\Http\Request;
 use App\Exceptions\GeneralException;
 use App\Http\Controllers\Controller;
@@ -18,6 +19,13 @@ use App\Repositories\Frontend\Auth\UserSessionRepository;
 class LoginController extends Controller
 {
     use AuthenticatesUsers;
+
+    protected $tenantRepository;
+
+    public function __construct(TenantRepository $tenantRepository)
+    {
+        $this->tenantRepository = $tenantRepository;
+    }
 
     /**
      * Where to redirect users after login.
@@ -59,6 +67,7 @@ class LoginController extends Controller
      */
     protected function authenticated(Request $request, $user)
     {
+        $tenant = $this->tenantRepository->getById($user->tenant_id);
         /*
          * Check to see if the users account is confirmed and active
          */
@@ -72,7 +81,7 @@ class LoginController extends Controller
 
             // Otherwise see if they want to resent the confirmation e-mail
             throw new GeneralException(__('exceptions.frontend.auth.confirmation.resend', ['user_uuid' => $user->{$user->getUuidName()}]));
-        } elseif (! $user->isActive()) {
+        } elseif (! $user->isActive() || ! $tenant->isActive()) {
             auth()->logout();
             throw new GeneralException(__('exceptions.frontend.auth.deactivated'));
         }
