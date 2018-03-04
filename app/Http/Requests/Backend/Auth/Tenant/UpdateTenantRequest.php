@@ -5,7 +5,7 @@ namespace App\Http\Requests\Backend\Auth\Tenant;
 use Illuminate\Foundation\Http\FormRequest;
 
 /**
- * Class UpdateRoleRequest.
+ * Class UpdateTenantRequest.
  */
 class UpdateTenantRequest extends FormRequest
 {

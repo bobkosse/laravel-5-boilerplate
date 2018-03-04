@@ -4,13 +4,18 @@ namespace App\Models\Auth\Traits\Relationship;
 
 use App\Models\System\Session;
 use App\Models\Auth\User;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 
 /**
- * Class UserRelationship.
+ * Trait TenantRelationship.
  */
 trait TenantRelationship
 {
-    public function users() {
+    /**
+     * User relationship
+     * @return HasMany
+     */
+    public function users(): HasMany {
         return $this->hasMany(User::class);
     }
 }

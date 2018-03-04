@@ -6,7 +6,7 @@ use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Validation\Rule;
 
 /**
- * Class StoreRoleRequest.
+ * Class StoreTenantRequest.
  */
 class StoreTenantRequest extends FormRequest
 {

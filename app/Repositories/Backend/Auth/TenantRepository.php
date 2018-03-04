@@ -1,17 +1,27 @@
 <?php
 namespace App\Repositories\Backend\Auth;
 
-use App\Events\Backend\Auth\Tenant\TenantCreated;
 use App\Exceptions\GeneralException;
 use App\Models\Auth\Tenant;
 use App\Repositories\BaseRepository;
 use Illuminate\Contracts\Pagination\LengthAwarePaginator;
 use Illuminate\Support\Facades\DB;
 
+/**
+ * Class TenantRepository
+ * @package App\Repositories\Backend\Auth
+ */
 class TenantRepository extends BaseRepository
 {
+    /**
+     * @var UserRepository
+     */
     private $userRepository;
 
+    /**
+     * TenantRepository constructor.
+     * @param UserRepository $userRepository
+     */
     public function __construct(UserRepository $userRepository)
     {
         $this->userRepository = $userRepository;
@@ -61,7 +71,6 @@ class TenantRepository extends BaseRepository
                 ) {
                     return $tenant;
                 }
-
                 throw new GeneralException(trans('exceptions.backend.access.roles.update_error'));
             });
         }
@@ -88,7 +97,6 @@ class TenantRepository extends BaseRepository
                     throw new GeneralException($e->getMessage());
                 }
 
-                event(new TenantCreated($tenant));
                 return $tenant;
             }
 

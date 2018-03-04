@@ -3,10 +3,7 @@
 namespace App\Models\Auth\Traits\Method;
 
 /**
- * Trait UserMethod.
- */
-/**
- * Class TenantMethod
+ * Trait TenantMethod
  * @package App\Models\Auth\Traits\Method
  */
 trait TenantMethod
@@ -20,7 +17,7 @@ trait TenantMethod
     {
         $this->users()->delete();
 
-        // delete the user
+        // delete the tenant
         return parent::delete();
     }
 }

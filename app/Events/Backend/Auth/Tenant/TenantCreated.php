@@ -5,7 +5,7 @@ namespace App\Events\Backend\Auth\Tenant;
 use Illuminate\Queue\SerializesModels;
 
 /**
- * Class UserCreated.
+ * Class TenantCreated.
  */
 class TenantCreated
 {
@@ -17,7 +17,7 @@ class TenantCreated
     public $tenant;
 
     /**
-     * @param $user
+     * @param $tenant
      */
     public function __construct($tenant)
     {
