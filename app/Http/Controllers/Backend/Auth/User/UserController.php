@@ -6,6 +6,7 @@ use App\Models\Auth\User;
 use App\Http\Controllers\Controller;
 use App\Events\Backend\Auth\User\UserDeleted;
 use App\Repositories\Backend\Auth\RoleRepository;
+use App\Repositories\Backend\Auth\TenantRepository;
 use App\Repositories\Backend\Auth\UserRepository;
 use App\Repositories\Backend\Auth\PermissionRepository;
 use App\Http\Requests\Backend\Auth\User\StoreUserRequest;
@@ -22,14 +23,17 @@ class UserController extends Controller
      */
     protected $userRepository;
 
+    protected $tenantRepository;
+
     /**
      * UserController constructor.
      *
      * @param UserRepository $userRepository
      */
-    public function __construct(UserRepository $userRepository)
+    public function __construct(UserRepository $userRepository, TenantRepository $tenantRepository)
     {
         $this->userRepository = $userRepository;
+        $this->tenantRepository = $tenantRepository;
     }
 
     /**
@@ -40,6 +44,7 @@ class UserController extends Controller
     public function index(ManageUserRequest $request)
     {
         return view('backend.auth.user.index')
+            ->withTenant($this->tenantRepository->getById(auth()->user()->tenant_id))
             ->withUsers($this->userRepository->getActivePaginated(25, 'id', 'asc'));
     }
 

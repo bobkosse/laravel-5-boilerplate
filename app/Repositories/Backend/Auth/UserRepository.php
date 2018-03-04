@@ -104,46 +104,53 @@ class UserRepository extends BaseRepository
             $data['tenant_id'] = auth()->user()->tenant_id;
         }
 
-        return DB::transaction(function () use ($data) {
-            $user = parent::create([
-                'tenant_id' => $data['tenant_id'],
-                'first_name' => $data['first_name'],
-                'last_name' => $data['last_name'],
-                'email' => $data['email'],
-                'timezone' => $data['timezone'],
-                'password' => Hash::make($data['password']),
-                'active' => isset($data['active']) && $data['active'] == '1' ? 1 : 0,
-                'confirmation_code' => md5(uniqid(mt_rand(), true)),
-                'confirmed' => isset($data['confirmed']) && $data['confirmed'] == '1' ? 1 : 0,
-            ]);
+        $tenant = $this->tenantRepository->getById(auth()->user()->tenant_id);
 
-            // See if adding any additional permissions
-            if (! isset($data['permissions']) || ! count($data['permissions'])) {
-                $data['permissions'] = [];
-            }
+        if($this->count() < $tenant) {
 
-            if ($user) {
-                // User must have at least one role
-                if (! count($data['roles'])) {
-                    throw new GeneralException(__('exceptions.backend.access.users.role_needed_create'));
+            return DB::transaction(function () use ($data) {
+                $user = parent::create([
+                    'tenant_id' => $data['tenant_id'],
+                    'first_name' => $data['first_name'],
+                    'last_name' => $data['last_name'],
+                    'email' => $data['email'],
+                    'timezone' => $data['timezone'],
+                    'password' => Hash::make($data['password']),
+                    'active' => isset($data['active']) && $data['active'] == '1' ? 1 : 0,
+                    'confirmation_code' => md5(uniqid(mt_rand(), true)),
+                    'confirmed' => isset($data['confirmed']) && $data['confirmed'] == '1' ? 1 : 0,
+                ]);
+
+                // See if adding any additional permissions
+                if (!isset($data['permissions']) || !count($data['permissions'])) {
+                    $data['permissions'] = [];
                 }
 
-                // Add selected roles/permissions
-                $user->syncRoles($data['roles']);
-                $user->syncPermissions($data['permissions']);
+                if ($user) {
+                    // User must have at least one role
+                    if (!count($data['roles'])) {
+                        throw new GeneralException(__('exceptions.backend.access.users.role_needed_create'));
+                    }
 
-                //Send confirmation email if requested and account approval is off
-                if (isset($data['confirmation_email']) && $user->confirmed == 0 && ! config('access.users.requires_approval')) {
-                    $user->notify(new UserNeedsConfirmation($user->confirmation_code));
+                    // Add selected roles/permissions
+                    $user->syncRoles($data['roles']);
+                    $user->syncPermissions($data['permissions']);
+
+                    //Send confirmation email if requested and account approval is off
+                    if (isset($data['confirmation_email']) && $user->confirmed == 0 && !config('access.users.requires_approval')) {
+                        $user->notify(new UserNeedsConfirmation($user->confirmation_code));
+                    }
+
+                    event(new UserCreated($user));
+
+                    return $user;
                 }
 
-                event(new UserCreated($user));
+                throw new GeneralException(__('exceptions.backend.access.users.create_error'));
+            });
+        }
 
-                return $user;
-            }
-
-            throw new GeneralException(__('exceptions.backend.access.users.create_error'));
-        });
+        throw new GeneralException(__('exceptions.backend.access.users.create_error_max_license'));
     }
 
     /**
