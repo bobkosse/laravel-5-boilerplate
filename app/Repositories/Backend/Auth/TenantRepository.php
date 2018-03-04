@@ -1,6 +1,7 @@
 <?php
 namespace App\Repositories\Backend\Auth;
 
+use App\Events\Backend\Auth\Tenant\TenantCreated;
 use App\Exceptions\GeneralException;
 use App\Models\Auth\Tenant;
 use App\Repositories\BaseRepository;
@@ -57,6 +58,30 @@ class TenantRepository extends BaseRepository
                 throw new GeneralException(trans('exceptions.backend.access.roles.update_error'));
             });
         }
+    }
+
+    /**
+     * Create a new tenant
+     *
+     * @param array $data
+     * @return Tenant
+     */
+    public function create(array $data) : Tenant
+    {
+        return DB::transaction(function () use ($data) {
+            $tenant = parent::create([
+                'tenant_name' => $data['tenant_name'],
+            ]);
+
+            if ($tenant) {
+                // @TODO: CREATE A NEW USER FOR THIS TENANT
+                event(new TenantCreated($tenant));
+
+                return $tenant;
+            }
+
+            throw new GeneralException(__('exceptions.backend.access.tenant.create_error'));
+        });
     }
 
     /**
