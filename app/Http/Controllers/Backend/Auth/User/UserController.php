@@ -23,6 +23,9 @@ class UserController extends Controller
      */
     protected $userRepository;
 
+    /**
+     * @var TenantRepository
+     */
     protected $tenantRepository;
 
     /**

@@ -12,6 +12,7 @@ class UserEventListener
      */
     public function onLoggedIn($event)
     {
+        session(['tenant_id' => $event->user->tenant_id]);
         \Log::info('User Logged In: '.$event->user->full_name);
     }
 
@@ -20,6 +21,7 @@ class UserEventListener
      */
     public function onLoggedOut($event)
     {
+        session(['tenant_id' => '']);
         \Log::info('User Logged Out: '.$event->user->full_name);
     }
 

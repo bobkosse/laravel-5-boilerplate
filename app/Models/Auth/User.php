@@ -13,6 +13,7 @@ use App\Models\Auth\Traits\SendUserPasswordReset;
 use App\Models\Auth\Traits\Attribute\UserAttribute;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use App\Models\Auth\Traits\Relationship\UserRelationship;
+use App\Models\Auth\Traits\Scope\TenantScope;
 
 /**
  * Class User.
@@ -27,6 +28,7 @@ class User extends Authenticatable
         UserMethod,
         UserRelationship,
         UserScope,
+        TenantScope,
         Uuid;
 
     /**
