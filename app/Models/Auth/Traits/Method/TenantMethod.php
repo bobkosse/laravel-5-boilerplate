@@ -1,6 +1,7 @@
 <?php
 
 namespace App\Models\Auth\Traits\Method;
+use Carbon\Carbon;
 
 /**
  * Trait TenantMethod
@@ -26,6 +27,6 @@ trait TenantMethod
      */
     public function isActive()
     {
-        return $this->active == 1;
+        return $this->active == 1 && $this->end_subscription >= Carbon::today();
     }
 }
