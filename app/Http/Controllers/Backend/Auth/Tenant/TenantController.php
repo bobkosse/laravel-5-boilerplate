@@ -139,7 +139,7 @@ class TenantController extends Controller
         if(session('tenant_id') !== 1) {
             return redirect()->route('admin.dashboard');
         }
-        
+
         $this->tenantRepository->deleteById($tenant->id);
         event(new TenantDeleted($tenant));
 
